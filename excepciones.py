@@ -1,11 +1,10 @@
-class ServicioNoDisponibleError(Exception):
+class ErrorReserva(Exception):
     pass
 
-class CapacidadExcedidaError(Exception):
+
+class ErrorDatosReserva(ErrorReserva):
     pass
 
-class EquipoNoDisponibleError(Exception):
-    pass
 
-class DatosInvalidosError(Exception):
+class ErrorEstadoReserva(ErrorReserva):
     pass
