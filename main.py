@@ -1,89 +1,32 @@
-from servicios_especificos import *
-import logging
+from cliente import Cliente
+from servicios_especificos import Asesoria, ReservaSala
+from reserva import Reserva
 
 
-# ======================================================
-# PRUEBA RESERVA DE SALA
-# ======================================================
+print("===== CASO CORRECTO =====")
+cliente1 = Cliente("Juan", "juan@gmail.com")
+servicio1 = Asesoria("basico")
 
+r1 = Reserva(cliente1, servicio1)
+r1.confirmar()
+r1.cancelar()
+
+
+print("===== ERROR DATOS =====")
+r2 = Reserva(None, None)
+r2.confirmar()
+
+
+print("===== ERROR SERVICIO =====")
 try:
-
-    sala1 = ReservaSala(
-        "Sala Ejecutiva",
-        100000,
-        20,
-        disponible=True,
-        aire_acondicionado=True,
-        internet=True,
-        videobeam=True
-    )
-
-    print(sala1.descripcion())
-
-    sala1.validar_disponibilidad()
-
-    print("Costo:",
-          sala1.calcular_costo(3))
-
+    servicio_error = Asesoria("medio")
 except Exception as e:
-
-    logging.error(e)
-
-    print("Error:", e)
+    print("❌ Error:", e)
 
 
-print("\n========================\n")
+print("===== ERROR CANCELAR =====")
+cliente3 = Cliente("Maria", "maria@gmail.com")
+servicio3 = ReservaSala()
 
-
-# ======================================================
-# PRUEBA ALQUILER EQUIPO
-# ======================================================
-
-try:
-
-    equipo1 = AlquilerEquipo(
-        "Video Beam Epson",
-        50000,
-        "Proyector",
-        2
-    )
-
-    equipo1.validar_disponibilidad(5)
-
-except Exception as e:
-
-    logging.error(e)
-
-    print("Error:", e)
-
-
-print("\n========================\n")
-
-
-# ======================================================
-# PRUEBA ASESORIA
-# ======================================================
-
-try:
-
-    asesoria1 = Asesoria(
-        "Consultoría TI",
-        80000,
-        "Ciberseguridad",
-        experto_certificado=True
-    )
-
-    asesoria1.validar_disponibilidad()
-
-    print(asesoria1.descripcion())
-
-    print(
-        "Costo:",
-        asesoria1.calcular_costo(6)
-    )
-
-except Exception as e:
-
-    logging.error(e)
-
-    print("Error:", e)
+r3 = Reserva(cliente3, servicio3)
+r3.cancelar()
