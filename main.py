@@ -1,13 +1,15 @@
-from servicios_especificos import *
+import logger_config
 import logging
+from servicios_especificos import *
 
+logging.info("Iniciando aplicación de reservas")
 
 # ======================================================
 # PRUEBA RESERVA DE SALA
 # ======================================================
 
 try:
-
+    logging.info("Creando ReservaSala: Sala Ejecutiva")
     sala1 = ReservaSala(
         "Sala Ejecutiva",
         100000,
@@ -19,11 +21,14 @@ try:
     )
 
     print(sala1.descripcion())
+    logging.info("ReservaSala validada exitosamente")
 
     sala1.validar_disponibilidad()
 
+    costo = sala1.calcular_costo(3)
     print("Costo:",
-          sala1.calcular_costo(3))
+          costo)
+    logging.info(f"Costo calculado para ReservaSala: {costo}")
 
 except Exception as e:
 
