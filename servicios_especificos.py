@@ -1,6 +1,6 @@
 from servicio import Servicio
-from excepciones import ServicioNoDisponible, DatosInvalidos
-
+from excepcion import ...
+``
 # SERVICIO 1 - RESERVA DE SALAS
 
 class ReservaSala(Servicio):
