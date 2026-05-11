@@ -1,4 +1,4 @@
-ffrom servicio import Servicio
+from servicio import Servicio
 from excepciones import DatosInvalidosError as DatosInvalidos, ServicioNoDisponibleError as ServicioNoDisponible
 
 # SERVICIO 1 - RESERVA DE SALAS
