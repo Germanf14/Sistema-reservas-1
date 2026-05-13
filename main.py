@@ -1,13 +1,15 @@
-from servicios_especificos import *
+import logger_config
 import logging
+from servicios_especificos import *
 
+logging.info("Iniciando aplicación de reservas")
 
 # ======================================================
 # PRUEBA RESERVA DE SALA
 # ======================================================
 
 try:
-
+    logging.info("Creando ReservaSala: Sala Ejecutiva")
     sala1 = ReservaSala(
         "Sala Ejecutiva",
         100000,
@@ -19,11 +21,25 @@ try:
     )
 
     print(sala1.descripcion())
+    logging.info("ReservaSala validada exitosamente")
 
     sala1.validar_disponibilidad()
 
-    print("Costo:",
-          sala1.calcular_costo(3))
+    # Desglose del costo
+    costo_base = sala1.costo_por_hora * sala1.horas
+    recargo_aire = costo_base * 0.10 if sala1.aire_acondicionado else 0
+    recargo_internet = costo_base * 0.05 if sala1.internet else 0
+    recargo_videobeam = costo_base * 0.15 if sala1.videobeam else 0
+    costo_total = sala1.calcular_costo(0)
+    
+    print("✓ DESGLOSE DE COSTO:")
+    print(f"  - Costo base: ${costo_base:,.0f} ({sala1.costo_por_hora} x {sala1.horas} horas)")
+    print(f"  - Recargo aire acondicionado: ${recargo_aire:,.0f}")
+    print(f"  - Recargo internet: ${recargo_internet:,.0f}")
+    print(f"  - Recargo videobeam: ${recargo_videobeam:,.0f}")
+    print(f"  - TOTAL: ${costo_total:,.0f}")
+    
+    logging.info(f"Costo base: {costo_base}, Aire AC: {recargo_aire}, Internet: {recargo_internet}, Videobeam: {recargo_videobeam}, Total: {costo_total}")
 
 except Exception as e:
 

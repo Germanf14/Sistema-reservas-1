@@ -1,13 +1,26 @@
 from servicio import Servicio
-from excepciones import ServicioNoDisponible, DatosInvalidos
+from excepciones import (
+    ServicioNoDisponible,
+    DatosInvalidos
+)
 
+# =========================
 # SERVICIO 1 - RESERVA DE SALAS
+# =========================
 
 class ReservaSala(Servicio):
 
     tipos_sala = ["normal", "vip", "auditorio"]
 
-    def __init__(self, horas, tipo_sala="normal"):
+    def __init__(
+        self,
+        horas,
+        tipo_sala="normal",
+        disponible=True,
+        aire_acondicionado=False,
+        internet=False,
+        videobeam=False
+    ):
         super().__init__("Reserva de Sala")
 
         if horas <= 0:
@@ -22,6 +35,18 @@ class ReservaSala(Servicio):
 
         self.horas = horas
         self.tipo_sala = tipo_sala.lower()
+
+        self.disponible = disponible
+        self.aire_acondicionado = aire_acondicionado
+        self.internet = internet
+        self.videobeam = videobeam
+
+    def validar_disponibilidad(self):
+
+        if not self.disponible:
+            raise ServicioNoDisponible(
+                "Sala no disponible"
+            )
 
     def calcular_costo(self, descuento=0):
 
@@ -44,13 +69,21 @@ class ReservaSala(Servicio):
         return total
 
     def descripcion(self):
+
         return (
             f"Servicio: {self.nombre} | "
             f"Tipo de sala: {self.tipo_sala} | "
-            f"Horas: {self.horas}"
+            f"Horas: {self.horas} | "
+            f"Disponible: {self.disponible} | "
+            f"Aire acondicionado: {self.aire_acondicionado} | "
+            f"Internet: {self.internet} | "
+            f"Videobeam: {self.videobeam}"
         )
 
+
+# =========================
 # SERVICIO 2 - ALQUILER DE EQUIPOS
+# =========================
 
 class AlquilerEquipo(Servicio):
 
@@ -99,6 +132,9 @@ class AlquilerEquipo(Servicio):
         self.equipo = equipo.lower()
         self.dias = dias
 
+    def validar_disponibilidad(self):
+        pass
+
     def calcular_costo(self, impuesto=0):
 
         precios = {
@@ -129,6 +165,7 @@ class AlquilerEquipo(Servicio):
         return total
 
     def descripcion(self):
+
         return (
             f"Servicio: {self.nombre} | "
             f"Equipo: {self.equipo} | "
@@ -136,7 +173,9 @@ class AlquilerEquipo(Servicio):
         )
 
 
+# =========================
 # SERVICIO 3 - ASESORIAS ESPECIALIZADAS
+# =========================
 
 class Asesoria(Servicio):
 
@@ -146,7 +185,12 @@ class Asesoria(Servicio):
         "avanzado"
     ]
 
-    def __init__(self, nivel, horas):
+    def __init__(
+        self,
+        nivel,
+        horas,
+        experto_certificado=True
+    ):
         super().__init__("Asesoría Especializada")
 
         if nivel.lower() not in self.niveles_validos:
@@ -161,8 +205,20 @@ class Asesoria(Servicio):
 
         self.nivel = nivel.lower()
         self.horas = horas
+        self.experto_certificado = experto_certificado
 
-    def calcular_costo(self, descuento=0, impuesto=0):
+    def validar_disponibilidad(self):
+
+        if not self.experto_certificado:
+            raise ServicioNoDisponible(
+                "Asesor no certificado"
+            )
+
+    def calcular_costo(
+        self,
+        descuento=0,
+        impuesto=0
+    ):
 
         if self.nivel == "basico":
             valor_hora = 20000
@@ -185,14 +241,18 @@ class Asesoria(Servicio):
         return total
 
     def descripcion(self):
+
         return (
             f"Servicio: {self.nombre} | "
             f"Nivel: {self.nivel} | "
-            f"Horas: {self.horas}"
+            f"Horas: {self.horas} | "
+            f"Experto certificado: {self.experto_certificado}"
         )
 
 
+# =========================
 # SERVICIO 4 - SERVICIOS COMPLEMENTARIOS
+# =========================
 
 class ServicioComplementario(Servicio):
 
@@ -226,10 +286,14 @@ class ServicioComplementario(Servicio):
             "soporte tecnico": 40000
         }
 
-        return costos[self.servicio] * self.cantidad_horas
+        return (
+            costos[self.servicio]
+            * self.cantidad_horas
+        )
 
     def descripcion(self):
+
         return (
             f"Servicio: {self.servicio} | "
-            f"Horas: {self.cantidad_horas}")
-        
+            f"Horas: {self.cantidad_horas}"
+        )
